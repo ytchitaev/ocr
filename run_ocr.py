@@ -1,17 +1,28 @@
 import os
 import shutil
 import pytesseract
+import configparser
 from PIL import Image
 
-# Ask the user for the path to the Tesseract executable
-tesseract_cmd = input("Please enter the path to the Tesseract executable, or press Enter to use the default path: ")
+def load_config():
+    # Define default config
+    config = {
+        'TESSERACT_CMD': r'C:\Program Files\Tesseract-OCR\tesseract.exe',
+        'INPUT_FOLDER': 'input',
+        'OUTPUT_FOLDER': 'output',
+        'ARCHIVE_FOLDER': 'archive'
+    }
 
-# If no value is supplied, default to the existing set one
-if not tesseract_cmd:
-    tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    # Try to read the config from the "env" file
+    if os.path.isfile('env.ini'):
+        parser = configparser.ConfigParser()
+        parser.read('env.ini')
+        if 'DEFAULT' in parser:
+            # Transform the keys to uppercase before updating the config dictionary
+            upper_case_dict = {k.upper(): v for k, v in parser['DEFAULT'].items()}
+            config.update(upper_case_dict)
 
-# Tell pytesseract where to find the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
+    return config
 
 def ocr_from_images(input_folder, output_folder, archive_folder):
     # Check if the input folder exists
@@ -65,10 +76,10 @@ def ocr_from_images(input_folder, output_folder, archive_folder):
         archive_file_path = os.path.join(archive_folder, filename)
         shutil.move(input_file_path, archive_file_path)
 
-# Define the input, output, and archive directories
-input_folder = "input"
-output_folder = "output"
-archive_folder = "archive"
-
-# Run the function
-ocr_from_images(input_folder, output_folder, archive_folder)
+if __name__ == "__main__":
+    # Load config
+    config = load_config()
+    # Tell pytesseract where to find the Tesseract executable
+    pytesseract.pytesseract.tesseract_cmd = config['TESSERACT_CMD']
+    # Run the function
+    ocr_from_images(config['INPUT_FOLDER'], config['OUTPUT_FOLDER'], config['ARCHIVE_FOLDER'])

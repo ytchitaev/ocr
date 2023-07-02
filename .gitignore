@@ -175,8 +175,9 @@ dist/
 input/*
 !input/.gitkeep
 
-# Ignore output directory
+# Ignore output / archive directory
 output/
+archive/
 
 # Testing code
 .exclude
