@@ -9,12 +9,13 @@ This project demonstrates how to use pytesseract to perform Optical Character Re
   - Download Tesseract from the official GitHub repository: [https://github.com/tesseract-ocr/tesseract](https://github.com/tesseract-ocr/tesseract)
   - Make sure to add Tesseract to your system's PATH environment variable
 
-## Setup
+## Use
 
 1. Clone the repository or download the project files.
 2. `create_venv.ps1` to create venv from requirements
-3. `run_venv.ps1` to run `run_ocr.exe` from venv
-4. `build_exe.ps1` to `run_ocr.exe` from `run_ocr.spec`
+3. Set `env.ini` to specify the arguments, if not found uses default
+4. `run_venv.ps1` to run `run_ocr.exe` from venv
+5. `build_exe.ps1` to build exe from `run_ocr.py`
 
 ## License
 
